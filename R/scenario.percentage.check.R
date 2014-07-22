@@ -1,7 +1,7 @@
 # calculate the percentage of the whole landscape that each of the percentage
 # class shapefiles actually end up be - purpose is to test if there are any
 # problem scenarios where the percentages classes are too far off
-
+rm(list=ls())
 require(rgdal)
 require(rgeos)
 files <- list.files("output", pattern=".shp")
@@ -20,6 +20,6 @@ lcm.hab <- lcm.hab[lcm.hab$area_ha >= 0.02,]
 area  <- gArea(lcm.hab)
 test.res["lcm",1] <- area
 
-for(i in 1:10){
+for(i in 1:nrow(test.res)){
   test.res[i, 2] <- test.res[i, 1] / test.res["lcm", 1] * 100
 }
