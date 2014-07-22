@@ -2,10 +2,12 @@
 # of suitable habitat patches. Weights patches by type - grassland more vulnerable.
 s4 <- function(lcm.hab) {
   load("data/habitat.rarity.nott.rda")
-  lcm.stat$rarity <- row.names(lcm.gb.stat)
+  lcm.stat$rarity <- row.names(lcm.stat)
   lcm.hab@data <- data.frame(lcm.hab@data, lcm.stat[match(lcm.hab@data$lcm_class, 
                                                                          lcm.stat$code),])
   lcm.hab <- lcm.hab[order(lcm.hab$rarity),]
+  lcm.hab@data <- subset(lcm.hab@data, select=c("code", "area_ha"))
+  names(lcm.hab@data)  <- c("lcm_class", "area_ha")
   lcm.hab$cumsum <- cumsum(lcm.hab$area_ha)
   writeOGR(lcm.hab[lcm.hab$cumsum >= 0.1*sum(lcm.hab$area_ha),], 
            "output", "s4_90_perc", driver="ESRI Shapefile")

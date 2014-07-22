@@ -6,6 +6,8 @@ s3 <- function(lcm.hab) {
   lcm.hab@data <- data.frame(lcm.hab@data, lcm.gb.stat[match(lcm.hab@data$lcm_class, 
                                                                          lcm.gb.stat$code),])
   lcm.hab <- lcm.hab[order(lcm.hab$rarity),]
+  lcm.hab@data <- subset(lcm.hab@data, select=c("code", "area_ha"))
+  names(lcm.hab@data)  <- c("lcm_class", "area_ha")
   lcm.hab$cumsum <- cumsum(lcm.hab$area_ha)
   writeOGR(lcm.hab[lcm.hab$cumsum >= 0.1*sum(lcm.hab$area_ha),], 
            "output", "s3_90_perc", driver="ESRI Shapefile")
