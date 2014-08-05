@@ -5,7 +5,7 @@ s3 <- function(lcm.hab) {
   lcm.gb.stat$rarity <- row.names(lcm.gb.stat)
   lcm.hab@data <- data.frame(lcm.hab@data, lcm.gb.stat[match(lcm.hab@data$lcm_class, 
                                                                          lcm.gb.stat$code),])
-  lcm.hab <- lcm.hab[order(lcm.hab$rarity),]
+  lcm.hab <- lcm.hab[order(as.numeric(lcm.hab$rarity)),]
   lcm.hab@data <- subset(lcm.hab@data, select=c("code", "area_ha"))
   names(lcm.hab@data)  <- c("lcm_class", "area_ha")
   lcm.hab$cumsum <- cumsum(lcm.hab$area_ha)
