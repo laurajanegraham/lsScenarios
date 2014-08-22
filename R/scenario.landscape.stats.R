@@ -2,16 +2,18 @@ require(plyr)
 require(rgdal)
 require(rgeos)
 
-# get landscape info from shapefiles into a list - currently commented out so doesn't run on source()
-scenario.groups <- c("s1", "s2", "s3", "s4", "s5")
+# get landscape info from shapefiles into a list
+scenario.groups <- c("s1", "s2", "s3", "s4", "s5", "s6")
 scenario.ls <- list()
 for(s in scenario.groups){
-  files <- list.files("output", pattern=glob2rx(paste0(s, "*.shp")))
+  files <- list.files("output", pattern=glob2rx(paste0(s, "*.shp"))) 
   ls.df <- list()
   for(f in files){
     f <- substr(f, 1, nchar(f) - 4)
     ls <- readOGR("output", f)
+    ls$area_ha <- gArea(ls, byid=TRUE)/10000
     ls <- ls@data
+    ls <- subset(ls, lcm_class != 16) # S6 has shapes including the freshwater - these polys aren't being used.
     ls$perc <- 100 - as.numeric(substr(f, 4,5))
     ls.df[[f]] <- ls
   }

@@ -1,4 +1,4 @@
-# calculate the percentage of the whole landscape that each of the percentage
+# calculate the percentage of the whole landscape that each of the percentage 
 # class shapefiles actually end up be - purpose is to test if there are any
 # problem scenarios where the percentages classes are too far off
 rm(list=ls())
@@ -7,13 +7,17 @@ require(rgeos)
 files <- list.files("output", pattern=".shp")
 test.res <- data.frame(area=numeric(0), stringsAsFactors=FALSE)
 for(f in files){
-  f <- substr(f, 1, nchar(f)-4)
-  lcm <- readOGR("output", f)
-  area <- gArea(lcm)
-  test.res[f,1] <- area
+  test <- substr(f, nchar(f)-3, nchar(f))
+  if(test==".shp"){
+    f <- substr(f, 1, nchar(f)-4)
+    lcm <- readOGR("output", f)
+    lcm <- subset(lcm, lcm_class != 16)
+    area <- gArea(lcm)
+    test.res[f,1] <- area
+  }
 }
 
-lcm <- readOGR("E:/IFM_R/data/shapes", "lcm")
+lcm <- readOGR("../IFM_R/data/shapes", "lcm")
 lcm.hab <- lcm[lcm$INTCODE %in% c(1,2,3,4,5,6,8,9,10,11),] 
 lcm.hab$area_ha <- gArea(lcm.hab, byid=TRUE)/10000
 lcm.hab <- lcm.hab[lcm.hab$area_ha >= 0.02,]
