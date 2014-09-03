@@ -5,6 +5,7 @@ rm(list=ls())
 require(rgdal)
 require(rgeos)
 files <- list.files("output", pattern=".shp")
+files <- files[-1] # get rid of current
 test.res <- data.frame(area=numeric(0), stringsAsFactors=FALSE)
 for(f in files){
   test <- substr(f, nchar(f)-3, nchar(f))
