@@ -20,11 +20,11 @@ for(s in scenario.groups){
   scenario.ls[[s]] <- do.call("rbind", ls.df)
 }
 
-save(scenario.ls, file="E:/IFM_R/results/scenario.ls.rda")
+save(scenario.ls, file="../IFM_R/results/scenario.ls.rda")
 
 # create mean patch size plots
 require(ggplot2)
-load("E:/IFM_R/results/scenario.ls.rda")
+load("../IFM_R/results/scenario.ls.rda")
 scenario.ls <- llply(scenario.ls, function(x) ddply(x, .(perc), summarize, mps = round(mean(area_ha), 2)))
 scenario.ls <- do.call("rbind", scenario.ls)
 scenario.ls$Scenario <- paste0("Scenario ", toupper(substr(row.names(scenario.ls), 1,2)))
